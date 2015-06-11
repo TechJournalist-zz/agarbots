@@ -1,13 +1,15 @@
 var React = require('react');
+var Button = require('react-bootstrap').Button;
 
 module.exports = React.createClass({
   displayName: 'Header',
 
   render: function () {
     return (
-    	<div className='header'>
-    	webpack react starter kit - header
-    	</div>
+      <div className='header'>
+        <Button><i class="fa fa-bed"></i>Run</Button>
+        <Button>|| Stop</Button>
+      </div>
 		)
 	}
 
