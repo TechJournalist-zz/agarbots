@@ -7,7 +7,7 @@ module.exports = React.createClass({
   render: function () {
     return (
       <div className='header'>
-        <Button><i class="fa fa-bed"></i>Run</Button>
+        <Button><i className='fa fa-bed'></i>Run</Button>
         <Button>|| Stop</Button>
       </div>
 		)

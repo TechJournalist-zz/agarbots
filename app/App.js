@@ -1,10 +1,10 @@
 var React = require('react');
 
-var Header = require('./Components/Header');
-var Editor = require('./Components/Editor');
+var Header = require('./components/Header');
+var Editor = require('./components/Editor');
 var Favicon = require('react-favicon');
 
-var faviconUrl = require('./Assets/favicon.ico');
+var faviconUrl = require('./assets/favicon.ico');
 
 module.exports = React.createClass({
   displayName: 'App',
