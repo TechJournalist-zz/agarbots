@@ -7,6 +7,11 @@ var CodeMirror = require('react-code-mirror');
 module.exports = React.createClass({
   displayName: 'Editor',
 
+  propTypes: {
+    code: React.PropTypes.string,
+    onCodeChange: React.PropTypes.func.isRequired,
+  },
+
   componentDidMount: function() {
     // TODO(ibash) Hack fix. Something is weird with rendering code mirror, we
     // have to force a refresh after some time.
@@ -27,11 +32,11 @@ module.exports = React.createClass({
       style: {border: '1px solid black'},
       textAreaClassName: ['form-control'],
       textAreaStyle: {minHeight: '10em'},
-      defaultValue: 'function() {}',
-      value: 'function() {}',
+      value: this.props.code,
       mode: 'javascript',
       theme: 'solarized',
-      lineNumbers: true
+      lineNumbers: true,
+      onChange: this.props.onCodeChange
     };
 
     return (<CodeMirror {...codeMirrorProps}/>);

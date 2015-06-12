@@ -3,6 +3,14 @@ require('font-awesome/css/font-awesome.css');
 require('./assets/style.scss');
 
 var React = require('react');
-var App = require('./App.js');
+var App = require('./App');
+var AllTheMagic = require('./AllTheMagic');
 
-React.render(<App/>, document.getElementById('body'))
+var magic = new AllTheMagic();
+
+function render() {
+  React.render(<App {...magic.getState()}/>, document.getElementById('body'))
+}
+
+magic.onChange = render;
+render();

@@ -1,7 +1,7 @@
 {
-  "name": "webpack-starter",
+  "name": "agarbots",
   "version": "1.0.0",
-  "description": "Bare bones webpack project with a node express server",
+  "description": "",
   "main": "server/index.js",
   "scripts": {
     "dev": "webpack-dev-server --config ./webpack-dev.config.js --hot --progress --colors --content-base build & nodemon server/index.js --watch server",
@@ -10,10 +10,9 @@
     "test": "karma start",
     "testing": "karma start --single-run=false"
   },
-  "repository": "git@github.com:cgreening/webpack-starter.git",
-  "author": "Chris Greening",
-  "license": "BSD",
+  "author": "Islam Sharabash",
   "dependencies": {
+    "body-parser": "^1.12.4",
     "bootstrap": "^3.3.4",
     "codemirror": "^5.3.0",
     "compression": "^1.4.4",
@@ -22,10 +21,13 @@
     "express": "^4.12.3",
     "file-loader": "^0.8.4",
     "font-awesome": "^4.3.0",
+    "jailed": "^0.2.0",
     "jquery": "^2.1.4",
+    "lodash": "^3.9.3",
     "react-bootstrap": "^0.23.2",
     "react-code-mirror": "^3.0.4",
-    "url-loader": "^0.5.6"
+    "url-loader": "^0.5.6",
+    "ws": "^0.7.2"
   },
   "devDependencies": {
     "autoprefixer-loader": "^1.2.0",

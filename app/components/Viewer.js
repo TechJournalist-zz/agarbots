@@ -1,30 +1,26 @@
+/**
+ * Viewer
+ *
+ * Plays a session of agar.io
+ */
+var $ = require('jquery');
 var React = require('react');
+var Agar = require('../lib/agar_io_main_out');
 
 module.exports = React.createClass({
-  displayName: 'Content',
+  displayName: 'Viewer',
 
-  getInitialState: function() {
-  	return { serverData: null };
+  componentDidMount: function() {
+    //var address = 'ws://' + window.location.host + '/socket';
+    var address = 'ws://localhost:5000/socket?taco';
+    Agar(window, $, address, this.refs.canvas.getDOMNode());
   },
 
-  refreshData: function() {
-  	// replace this with your favourite library for doing ajax calls
-  	var xhr = new XMLHttpRequest();
-    xhr.open('get', '/api/currentTime', true);
-    xhr.onload = () => {
-      var data = JSON.parse(xhr.responseText);
-      this.setState({ serverData: data.time });
-    };
-    xhr.send();
-  },
-
-  render: function () {
+  render: function() {
     return (
-    <div>
-    <p>Here is some Content <b ref='serverResponse'>{ this.state.serverData || 'Click the button to hit the API' }</b></p>
-    <input ref='refreshButton' type='button' onClick={this.refreshData } value='Hit the server'></input>
-    </div>
-	);
+      <div>
+        <canvas ref="canvas" width="800" height="600"></canvas>
+      </div>
+    );
   }
-
 });
