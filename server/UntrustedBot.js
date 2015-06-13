@@ -8,6 +8,7 @@
  *   bot.play();
  */
 var _ = require('lodash');
+var WebSocket = require('ws');
 var fs = require('fs');
 var jailed = require('jailed');
 var path = require('path');
@@ -58,7 +59,7 @@ UntrustedBot.prototype.init = function init() {
   this.agent.setStep(this.step);
 
   // Proxy messages from backend.
-  if (this.client) {
+  if (this.client && this.client.readyState === WebSocket.OPEN) {
     this.backend.on('message', function(data) {
       self.client.send(data);
     });
