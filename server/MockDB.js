@@ -3,7 +3,6 @@ function MockDB() {
   this.bots = {};
   this.autoIncrementId = 0;
 }
-module.exports = MockDB;
 
 MockDB.prototype.save = function save(bot) {
   this.bots[bot.id] = bot;
@@ -20,3 +19,5 @@ MockDB.prototype.saveNew = function saveNew(bot) {
 MockDB.prototype.load = function load(id) {
   return this.bots[id];
 };
+
+module.exports = new MockDB();

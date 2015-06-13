@@ -8,7 +8,7 @@ var compression = require('compression');
 var cors = require('cors');
 var express= require('express');
 var path = require('path');
-var MockDB = require('./MockDB');
+var db = require('./mockDB');
 
 var STATIC_DIR = path.join(__dirname, './../build');
 
@@ -32,7 +32,6 @@ app.post('/bots', cors(), saveBot);
 
 app.use('/', express.static(STATIC_DIR, {maxage: 31557600}));
 
-var db = new MockDB();
 function inspect(req, res, next) {
   res.json(db.bots);
 };

@@ -1229,6 +1229,8 @@ module.exports = function start(f, h, address, canvas) {
             return (new Date)
                 .getTime()
         });
-        f.onload = Sa
+        // Use jquery ready instead of window.onload
+        //f.onload = Sa
+        h(Sa)
     }
 }

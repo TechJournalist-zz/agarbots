@@ -10,10 +10,30 @@ var Agar = require('../lib/agar_io_main_out');
 module.exports = React.createClass({
   displayName: 'Viewer',
 
+  propTypes: {
+    id: React.PropTypes.number,
+    playBot: React.PropTypes.bool.isRequired
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return this.props.id !== nextProps.id ||
+      this.props.playBot !== nextProps.playBot;
+  },
+
   componentDidMount: function() {
-    //var address = 'ws://' + window.location.host + '/socket';
-    var address = 'ws://localhost:5000/socket?taco';
-    Agar(window, $, address, this.refs.canvas.getDOMNode());
+    this.onDOMReady();
+  },
+
+  componentDidUpdate: function() {
+    this.onDOMReady();
+  },
+
+  onDOMReady: function() {
+    if (this.props.playBot) {
+      // TODO(ibash) move the hostname etc to something that's passed in
+      var address = 'ws://localhost:5000/socket?id=' + this.props.id;
+      Agar(window, $, address, this.refs.canvas.getDOMNode());
+    }
   },
 
   render: function() {

@@ -3,7 +3,9 @@
  *
  * Contains handlers for the websocket server.
  */
+var url = require('url');
 var UntrustedBot = require('./UntrustedBot');
+var db = require('./mockDB');
 
 /**
  * onConnection
@@ -17,11 +19,13 @@ var UntrustedBot = require('./UntrustedBot');
  * @return {undefined}
  */
 exports.onConnection = function onConnection(client) {
-  // TODO(ibash) parse url to get bot id
-  // TODO(ibash) get code
-  console.log(client.upgradeReq.url);
-  var code = 'function step(state, controller) {controller.move(0, 0);}'
+  var query = url.parse(client.upgradeReq.url, true).query;
+  var bot = db.load(query.id);
+  if (!bot) {
+    console.log('TODO(ibash) handle bot not existing');
+    return;
+  }
 
-  var bot = new UntrustedBot(code, client);
-  bot.play();
+  var untrustedBot = new UntrustedBot(bot.code, client);
+  untrustedBot.play();
 };
