@@ -28,11 +28,19 @@ module.exports = React.createClass({
     this.onDOMReady();
   },
 
+  componentWillUnmount: function() {
+    if (this.agar) {
+      this.agar.stop();
+      delete this.agar;
+    }
+  },
+
   onDOMReady: function() {
     if (this.props.playBot) {
       // TODO(ibash) move the hostname etc to something that's passed in
       var address = 'ws://localhost:5000/socket?id=' + this.props.id;
-      Agar(window, $, address, this.refs.canvas.getDOMNode());
+      this.agar = new Agar(address, this.refs.canvas.getDOMNode());
+      this.agar.start();
     }
   },
 

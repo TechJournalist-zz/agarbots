@@ -5,29 +5,55 @@
  *   - Does not allow input from client
  *   - Game gets initalized with server to connect to
  */
+var $ = require('jquery');
 var QUAD = require('./quadtree')
+
+function Agar(address, canvas) {
+  this.address = address;
+  this.canvas = canvas;
+  this.isStopped = false;
+  this.socket = null;
+
+  // TODO(ibash) handle connection / exponential backoff, etc
+};
+module.exports = Agar;
+
+/**
+ * stop
+ *
+ * Stops rendering and closes the WebSocket connection.
+ *
+ * @return {undefined}
+ */
+Agar.prototype.stop = function stop() {
+  this.isStopped = true;
+  this.socket.close();
+};
 
 /**
  * start
+ *
+ * Start a game of agar.io. This is a modified version of the main_out.js
  *
  * @param {Window} f
  * @param {jQuery} h
  * @return {undefined}
  */
-module.exports = function start(f, h, address, canvas) {
-  //Ha('ws://' + address);
-  Ha(address);
+Agar.prototype.start = function start() {
+  var self = this;
+//module.exports = function start(window, $, address, canvas) {
+  connect(this.address);
 
   function onLoad() {
     la = !0;
-    B = ma = canvas;
+    B = ma = self.canvas;
     e = B.getContext("2d");
     var a = !1,
       b = !1,
       c = !1;
-    f.onresize = Da;
+    window.onresize = Da;
     Da();
-    f.requestAnimationFrame(Ea);
+    window.requestAnimationFrame(Ea);
     null == q && v && W();
   }
 
@@ -61,16 +87,7 @@ module.exports = function start(f, h, address, canvas) {
     Y = (U - p / 2) / g + t
   }
 
-  function Ha(a) {
-    if (q) {
-      q.onopen = null;
-      q.onmessage = null;
-      q.onclose = null;
-      try {
-        q.close()
-      } catch (b) {}
-      q = null
-    }
+  function connect(address) {
     F = [];
     m = [];
     z = {};
@@ -79,8 +96,8 @@ module.exports = function start(f, h, address, canvas) {
     A = [];
     w = x = null;
     I = 0;
-    console.log("Connecting to " + a);
-    q = new WebSocket(a);
+    var q;
+    self.socket = q = new WebSocket(address);
     q.binaryType = "arraybuffer";
     q.onmessage = onMessage;
     q.onerror = function () {
@@ -179,11 +196,11 @@ module.exports = function start(f, h, address, canvas) {
       b += 4;
       if (0 == d) break;
       ++e;
-      var f, s = a.getInt16(b, !0);
+      var size, s = a.getInt16(b, !0);
       b += 2;
       l = a.getInt16(b, !0);
       b += 2;
-      f = a.getInt16(b, !0);
+      size = a.getInt16(b, !0);
       b += 2;
       for (var g = a.getUint8(b++), h = a.getUint8(b++), k = a.getUint8(b++), g = (g << 16 | h << 8 | k)
           .toString(16); 6 > g.length;) g = "0" + g;
@@ -202,12 +219,12 @@ module.exports = function start(f, h, address, canvas) {
       }
       p = n;
       n = null;
-      z.hasOwnProperty(d) ? (n = z[d], n.updatePos(), n.ox = n.x, n.oy = n.y, n.oSize = n.size, n.color = g) : (n = new Ka(d, s, l, f, g, p), n.pX = s, n.pY = l);
+      z.hasOwnProperty(d) ? (n = z[d], n.updatePos(), n.ox = n.x, n.oy = n.y, n.oSize = n.size, n.color = g) : (n = new Ka(d, s, l, size, g, p), n.pX = s, n.pY = l);
       n.isVirus = k;
       n.isAgitated = q;
       n.nx = s;
       n.ny = l;
-      n.nSize = f;
+      n.nSize = size;
       n.updateCode = c;
       n.updateTime = G;
       n.flags = h;
@@ -220,16 +237,18 @@ module.exports = function start(f, h, address, canvas) {
   }
 
   function Ea() {
-    oa();
-    f.requestAnimationFrame(Ea)
+    draw();
+    if (!self.isStopped) {
+      window.requestAnimationFrame(Ea)
+    }
   }
 
   function Da() {
-    k = f.innerWidth;
-    p = f.innerHeight;
+    k = window.innerWidth;
+    p = window.innerHeight;
     ma.width = B.width = k;
     ma.height = B.height = p;
-    oa()
+    draw()
   }
 
   function Na() {
@@ -246,7 +265,7 @@ module.exports = function start(f, h, address, canvas) {
     }
   }
 
-  function oa() {
+  function draw() {
     var a, b = Date.now();
     ++ab;
     G = b;
@@ -373,9 +392,7 @@ module.exports = function start(f, h, address, canvas) {
     this._stroke = !!c;
     d && (this._strokeColor = d)
   }
-  var $ = f.location.protocol,
-    Ua = "https:" == $,
-    ma, e, B, k, p, L = null,
+  var ma, e, B, k, p, L = null,
     q = null,
     r = 0,
     t = 0,
@@ -420,10 +437,10 @@ module.exports = function start(f, h, address, canvas) {
     eb = ["#333333", "#FF3333", "#33FF33", "#3333FF"],
     va = !1,
     D = 1,
-    Aa = "ontouchstart" in f && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+    Aa = "ontouchstart" in window && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     wa = new Image;
   wa.src = "img/split.png";
-  f.connect = Ha;
+
   var aa = 500,
     La = -1,
     Ma = -1,
@@ -434,6 +451,7 @@ module.exports = function start(f, h, address, canvas) {
     ya = [],
     fb = ["8", "nasa"],
     gb = ["m'blob"];
+
   Ka.prototype = {
     id: 0,
     points: null,
@@ -511,20 +529,20 @@ module.exports = function start(f, h, address, canvas) {
       this.flags & 32 && (b *= .25);
       return ~~Math.max(b, a)
     },
-    movePoints: function () {
+    movePoints: function() {
       this.createPoints();
       for (var a = this.points, b = this.pointsAcc, c = a.length, d = 0; d < c; ++d) {
         var e = b[(d - 1 + c) % c],
-          f = b[(d + 1) % c];
+          size = b[(d + 1) % c];
         b[d] += (Math.random() - .5) * (this.isAgitated ? 3 : 1);
         b[d] *= .7;
         10 < b[d] && (b[d] = 10); - 10 > b[d] && (b[d] = -10);
-        b[d] = (e + f + 8 * b[d]) / 10
+        b[d] = (e + size + 8 * b[d]) / 10
       }
       for (var h = this, m = this.isVirus ? 0 : (this.id / 1E3 + G / 1E4) % (2 * Math.PI), d = 0; d < c; ++d) {
         var k = a[d].v,
           e = a[(d - 1 + c) % c].v,
-          f = a[(d + 1) % c].v;
+          size = a[(d + 1) % c].v;
         if (15 < this.size && null != L && 20 < this.size * g) {
           var p = !1,
             q = a[d].x,
@@ -539,12 +557,12 @@ module.exports = function start(f, h, address, canvas) {
         0 > k && (k = 0);
         k = this.isAgitated ?
           (19 * k + this.size) / 20 : (12 * k + this.size) / 13;
-        a[d].v = (e + f + 8 * k) / 10;
+        a[d].v = (e + size + 8 * k) / 10;
         e = 2 * Math.PI / c;
-        f = this.points[d].v;
-        this.isVirus && 0 == d % 2 && (f += 5);
-        a[d].x = this.x + Math.cos(e * d + m) * f;
-        a[d].y = this.y + Math.sin(e * d + m) * f
+        size = this.points[d].v;
+        this.isVirus && 0 == d % 2 && (size += 5);
+        a[d].x = this.x + Math.cos(e * d + m) * size;
+        a[d].y = this.y + Math.sin(e * d + m) * size
       }
     },
     updatePos: function () {
@@ -565,7 +583,7 @@ module.exports = function start(f, h, address, canvas) {
       return this.x +
         this.size + 40 < r - k / 2 / g || this.y + this.size + 40 < t - p / 2 / g || this.x - this.size - 40 > r + k / 2 / g || this.y - this.size - 40 > t + p / 2 / g ? !1 : !0
     },
-    draw: function () {
+    draw: function() {
       if (this.shouldRender()) {
         var a = !this.isVirus && !this.isAgitated && .4 > g;
         5 > this.getNumPoints() && (a = !0);
@@ -610,17 +628,18 @@ module.exports = function start(f, h, address, canvas) {
           c = Math.ceil(10 * g) / 10;
           d.setScale(c);
           var d = d.render(),
-            f = ~~(d.width / c),
+            widthFloor = ~~(d.width / c),
             h = ~~(d.height / c);
-          e.drawImage(d, ~~this.x - ~~(f / 2), a - ~~(h / 2), f, h);
+          e.drawImage(d, ~~this.x - ~~(widthFloor / 2), a - ~~(h / 2), widthFloor, h);
           a += d.height / 2 / c + 4
         }
         Pa && (b || 0 == m.length && (!this.isVirus || this.isAgitated) && 20 < this.size) && (null == this.sizeCache && (this.sizeCache = new ja(this.getNameSize() / 2, "#FFFFFF", !0, "#000000")), b = this.sizeCache, b.setSize(this.getNameSize() / 2), b.setValue(~~(this.size * this.size / 100)), c = Math.ceil(10 * g) / 10, b.setScale(c),
-          d = b.render(), f = ~~(d.width / c), h = ~~(d.height / c), e.drawImage(d, ~~this.x - ~~(f / 2), a - ~~(h / 2), f, h));
+          d = b.render(), widthFloor = ~~(d.width / c), h = ~~(d.height / c), e.drawImage(d, ~~this.x - ~~(widthFloor / 2), a - ~~(h / 2), widthFloor, h));
         e.restore()
       }
     }
   };
+
   ja.prototype = {
     _value: "",
     _color: "#000000",
@@ -649,7 +668,7 @@ module.exports = function start(f, h, address, canvas) {
     setValue: function (a) {
       a != this._value && (this._value = a, this._dirty = !0)
     },
-    render: function () {
+    render: function() {
       null == this._canvas && (this._canvas = document.createElement("canvas"), this._ctx = this._canvas.getContext("2d"));
       if (this._dirty) {
         this._dirty = !1;
@@ -658,14 +677,14 @@ module.exports = function start(f, h, address, canvas) {
           c = this._value,
           d = this._scale,
           e = this._size,
-          f = e + "px Ubuntu";
-        b.font = f;
+          font = e + "px Ubuntu";
+        b.font = font;
         var h = b.measureText(c)
           .width,
           g = ~~(.2 * e);
         a.width = (h + 6) * d;
         a.height = (e + g) * d;
-        b.font = f;
+        b.font = font;
         b.scale(d, d);
         b.globalAlpha = 1;
         b.lineWidth = 3;
@@ -677,9 +696,11 @@ module.exports = function start(f, h, address, canvas) {
       return this._canvas
     }
   };
+
   Date.now || (Date.now = function () {
     return (new Date)
       .getTime()
   });
-  h(onLoad)
+
+  $(onLoad)
 }
