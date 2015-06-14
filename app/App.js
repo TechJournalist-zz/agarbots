@@ -34,7 +34,7 @@ module.exports = React.createClass({
   },
 
   onClickStop: function() {
-    console.log('stop was clicked');
+    AppActionCreators.stopBot();
   },
 
   render: function() {

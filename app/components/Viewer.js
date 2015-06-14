@@ -5,7 +5,7 @@
  */
 var $ = require('jquery');
 var React = require('react');
-var Agar = require('../lib/agar_io_main_out');
+var Agar = require('../lib/Agar');
 
 module.exports = React.createClass({
   displayName: 'Viewer',
@@ -41,6 +41,8 @@ module.exports = React.createClass({
       var address = 'ws://localhost:5000/socket?id=' + this.props.id;
       this.agar = new Agar(address, this.refs.canvas.getDOMNode());
       this.agar.start();
+    } else if (this.agar) {
+      this.agar.stop();
     }
   },
 

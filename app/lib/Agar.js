@@ -1,9 +1,8 @@
 /**
+ * Agar
+ *
  * Modified agar.io main_out.js
  * Version 536
- * Modifications:
- *   - Does not allow input from client
- *   - Game gets initalized with server to connect to
  */
 var $ = require('jquery');
 var QUAD = require('./quadtree')
@@ -28,6 +27,9 @@ module.exports = Agar;
 Agar.prototype.stop = function stop() {
   this.isStopped = true;
   this.socket.close();
+  this.socket.onmessage = null;
+  this.socket.onerror = null;
+  this.socket = null;
 };
 
 /**
@@ -368,7 +370,15 @@ Agar.prototype.start = function start() {
           for (a.font = "20px Ubuntu", b = 0; b < A.length; ++b) c = A[b].name || "An unnamed cell", ka || (c = "An unnamed cell"), -1 != F.indexOf(A[b].id) ? (m[0].name && (c = m[0].name), a.fillStyle = "#FFAAAA") : a.fillStyle = "#FFFFFF", c = b + 1 + ". " + c, a.fillText(c, 100 - a.measureText(c)
             .width / 2, 70 + 24 * b);
         else
-          for (b = c = 0; b < x.length; ++b) angEnd = c + x[b] * Math.PI * 2, a.fillStyle = eb[b + 1], a.beginPath(), a.moveTo(100, 140), a.arc(100, 140, 80, c, angEnd, !1), a.fill(), c = angEnd
+          for (b = c = 0; b < x.length; ++b){
+            var angEnd = c + x[b] * Math.PI * 2;
+            a.fillStyle = eb[b + 1];
+            a.beginPath();
+            a.moveTo(100, 140);
+            a.arc(100, 140, 80, c, angEnd, !1);
+            a.fill();
+            c = angEnd
+          }
       }
   }
 

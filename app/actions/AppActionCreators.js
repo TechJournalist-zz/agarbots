@@ -36,5 +36,9 @@ module.exports = {
     } else {
       Dispatcher.dispatch({type: ActionTypes.PLAY_BOT});
     }
+  },
+
+  stopBot: function() {
+    Dispatcher.dispatch({type: ActionTypes.STOP_BOT});
   }
 };

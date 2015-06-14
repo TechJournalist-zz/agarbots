@@ -15,7 +15,7 @@ module.exports = React.createClass({
         <Button onClick={this.props.onClickPlay}>
           <i className='fa fa-play'></i>&nbsp;Play
         </Button>
-        <Button>
+        <Button onClick={this.props.onClickStop}>
           <i className='fa fa-stop'></i>&nbsp;Stop
         </Button>
       </div>

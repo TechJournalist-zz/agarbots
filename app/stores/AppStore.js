@@ -89,6 +89,10 @@ AppStore.dispatchToken = Dispatcher.register(function(action) {
       AppStore.emitChange();
       break;
 
+    case ActionTypes.STOP_BOT:
+      state.playBot = false;
+      AppStore.emitChange();
+      break;
 
     default:
       // do nothing
