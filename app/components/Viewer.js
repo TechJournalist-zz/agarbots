@@ -39,6 +39,7 @@ module.exports = React.createClass({
     if (this.props.playBot) {
       // TODO(ibash) move the hostname etc to something that's passed in
       var address = 'ws://localhost:5000/socket?id=' + this.props.id;
+      //var address = 'ws://' + window.location.host + '/socket?id=' + this.props.id;
       this.agar = new Agar(address, this.refs.canvas.getDOMNode());
       this.agar.start();
     } else if (this.agar) {
