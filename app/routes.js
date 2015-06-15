@@ -10,7 +10,7 @@ var BotContainer = require('./components/BotContainer');
 var RedirectToDefaultValue = React.createClass({
   statics: {
     willTransitionTo: function(transition, params) {
-      transition.redirect('/bots/new');
+      transition.redirect('/bots/1');
     }
   },
   render: function() { return null; }

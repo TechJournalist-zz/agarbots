@@ -2,65 +2,48 @@
  * BotContainer
  */
 var React = require('react');
-var AppStore = require('../stores/AppStore');
-var AppActionCreators = require('../actions/AppActionCreators');
+var branch = require('baobab-react/mixins').branch;
 var Editor = require('../components/Editor');
 var Header = require('../components/Header');
 var Viewer = require('../components/Viewer');
+var actions = require('../actions');
 
 module.exports = React.createClass({
   displayName: 'BotContainer',
 
+  mixins: [branch],
+
+  cursors: {
+    editorCode: ['editorCode']
+  },
+
+  facets: {
+    bot: 'currentBot'
+  },
+
   // TODO(ibash) propTypes
 
   componentDidMount: function() {
-    AppStore.addChangeListener(this.onAppStoreChange);
-    console.log('bots container mounted, requesting data', this.props);
-    this.requestData();
+    actions.setCurrentBot(this.props.params.id);
   },
 
   componentWillUnmount: function() {
-    AppStore.removeChangeListener(this.onAppStoreChange);
   },
 
   componentWillReceiveProps: function(nextProps) {
-    console.log('will receive props called!', this.props, nextProps);
-    if (this.props.params.id !== nextProps.params.id) {
-      this.requestData();
-    }
-  },
-
-  getInitialState: function() {
-    // TODO(ibash) make this and onAppStoreChange DRY
-    return {
-      bot: AppStore.getBot(this.props.params.id),
-      editorCode: AppStore.getEditorCode()
-    };
-  },
-
-  onAppStoreChange: function() {
-    // TODO(ibash) make this and getInitialState DRY
-    this.setState({
-      bot: AppStore.getBot(this.props.params.id),
-      editorCode: AppStore.getEditorCode()
-    });
-  },
-
-  requestData: function() {
-    // TODO(ibash) handle new bot?
-    AppActionCreators.loadBot(this.props.params.id);
+    actions.setCurrentBot(nextProps.params.id);
   },
 
   onCodeChange: function(event) {
-    AppActionCreators.changeCode(event.target.value);
+    actions.changeCode(event.target.value);
   },
 
   onClickPlay: function() {
-    AppActionCreators.saveAndPlayBot(this.props.params.id);
+    actions.saveAndPlayBot(this.props.params.id);
   },
 
   onClickStop: function() {
-    AppActionCreators.stopBot(this.props.params.id);
+    actions.stopBot(this.props.params.id);
   },
 
   render: function() {
@@ -84,8 +67,8 @@ module.exports = React.createClass({
 
     var viewerProps = {
       ref: 'viewer',
-      id: this.state.id,
-      playBot: this.state.playBot
+      id: this.state.bot.id,
+      playBot: this.state.bot.playBot
     };
 
     return (
