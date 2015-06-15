@@ -50,7 +50,7 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div>
-        <canvas ref="canvas" width="800" height="600"></canvas>
+        <canvas ref='canvas' width='800' height='600'></canvas>
       </div>
     );
   }

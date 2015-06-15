@@ -16,13 +16,17 @@ module.exports = {
     });
   },
 
-  saveAndPlayBot: function() {
-    if (AppStore.isCodeChanged()) {
+  saveAndPlayBot: function(id) {
+    var bot = AppStore.getBot(id);
+    var editorCdoe = AppStore.getEditorCode();
+
+    // If there is no bot or the editor code was changed and is different...
+    if (!bot || (editorCdoe !== null && bot.code !== editorCdoe)) {
       $.ajax({
-        data: {code: AppStore.getCode()},
+        data: {code: editorCdoe},
         method: 'POST',
         // TODO(ibash) get the url from somewhere else...
-        url: 'http://localhost:5000/bots',
+        url: 'http://localhost:5000/api/bots',
         // TODO(ibash) handle failure case as well
         success: function(data) {
           Dispatcher.dispatch({
@@ -30,15 +34,40 @@ module.exports = {
             id: data.id
           });
 
-          Dispatcher.dispatch({type: ActionTypes.PLAY_BOT});
+          module.exports.playBot(data.id);
         }
       });
     } else {
-      Dispatcher.dispatch({type: ActionTypes.PLAY_BOT});
+      module.exports.playBot(id);
     }
   },
 
-  stopBot: function() {
-    Dispatcher.dispatch({type: ActionTypes.STOP_BOT});
+  playBot: function(id) {
+    Dispatcher.dispatch({
+      type: ActionTypes.PLAY_BOT,
+      id: id
+    });
+  },
+
+  stopBot: function(id) {
+    Dispatcher.dispatch({
+      type: ActionTypes.STOP_BOT,
+      id: id
+    });
+  },
+
+  loadBot: function(id) {
+    $.ajax({
+      method: 'GET',
+      // TODO(ibash) make relative url after proxy works...
+      url: 'http://localhost:5000/api/bots/' + id,
+      // TODO(ibash) handle failure case as well
+      success: function(data) {
+        Dispatcher.dispatch({
+          type: ActionTypes.BOT_LOADED,
+          bot: data
+        });
+      }
+    });
   }
 };

@@ -20,15 +20,15 @@ module.exports = app;
 app.use(bodyParser());
 app.use(compression());
 
+app.get('/api/bots/inspect', cors(), inspect);
+app.get('/api/bots/:id', cors(), getBot);
+app.post('/api/bots', cors(), saveBot);
+
+// TODO(ibash) make this work with history location
 app.get('/', function(req, res) {
   res.header('Cache-Control', "max-age=60, must-revalidate, private");
   res.sendFile('index.html', {root: STATIC_DIR});
 });
-
-
-app.get('/bots/inspect', cors(), inspect);
-app.get('/bots/:id', cors(), getBot);
-app.post('/bots', cors(), saveBot);
 
 app.use('/', express.static(STATIC_DIR, {maxage: 31557600}));
 

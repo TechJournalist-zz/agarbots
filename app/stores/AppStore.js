@@ -10,12 +10,16 @@ var ActionTypes = AppConstants.ActionTypes;
 var CHANGE_EVENT = 'change';
 
 
-var state = {
-  code: '',
-  id: null,
-  isCodeChanged: false,
-  playBot: false
+var bots = {
+  new: {
+    id: 0,
+    code: 'function step(state, controller) {\n}',
+    isCodeChanged: false,
+    playBot: false
+  }
 };
+
+var editorCode = null;
 
 var AppStore = _.assign({}, EventEmitter.prototype, {
   emitChange: function() {
@@ -43,43 +47,39 @@ var AppStore = _.assign({}, EventEmitter.prototype, {
   },
 
   /**
-   * isCodeChanged
+   * getEditorCode
    *
-   * @return {boolean}
+   * @return {string | null}
    */
-  isCodeChanged: function() {
-    return state.isCodeChanged;
+  getEditorCode: function() {
+    return editorCode;
   },
 
   /**
-   * getCode
+   * getBot
    *
-   * @return {string}
+   * @param id
+   * @return {undefined}
    */
-  getCode: function() {
-    return state.code;
-  },
-
-  /**
-   * getState
-   *
-   * @return {Object}
-   */
-  getState: function() {
-    return state;
+  getBot: function(id) {
+    return bots[id] || null
   }
 });
 
 AppStore.dispatchToken = Dispatcher.register(function(action) {
   switch(action.type) {
+    case ActionTypes.BOT_LOADED:
+      bots[action.bot.id] = action.bot;
+      AppStore.emitChange();
+      break;
+
     case ActionTypes.CHANGE_CODE:
-      state.code = action.code;
-      state.isCodeChanged = true;
+      editorCode = action.code;
       AppStore.emitChange();
       break;
 
     case ActionTypes.PLAY_BOT:
-      state.playBot = true;
+      bots[action.id].playBot = true;
       AppStore.emitChange();
       break;
 
