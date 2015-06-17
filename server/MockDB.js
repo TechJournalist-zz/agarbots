@@ -1,7 +1,7 @@
 // Mock db for use while developing
 function MockDB() {
   this.bots = {};
-  this.autoIncrementId = 0;
+  this.autoIncrementId = 1;
 }
 
 MockDB.prototype.save = function save(bot) {

@@ -2,6 +2,7 @@
  * BotContainer
  */
 var React = require('react');
+var Navigation = require('react-router').Navigation;
 var branch = require('baobab-react/mixins').branch;
 var Editor = require('../components/Editor');
 var Header = require('../components/Header');
@@ -11,7 +12,13 @@ var actions = require('../actions');
 module.exports = React.createClass({
   displayName: 'BotContainer',
 
-  mixins: [branch],
+  mixins: [branch, Navigation],
+
+  propTypes: {
+    params: React.PropTypes.shape({
+      id: React.PropTypes.number
+    })
+  },
 
   cursors: {
     editorCode: ['editorCode']
@@ -24,14 +31,18 @@ module.exports = React.createClass({
   // TODO(ibash) propTypes
 
   componentDidMount: function() {
-    actions.setCurrentBot(this.props.params.id);
+    // TODO(ibash) see id you can get id as an int
+    // TODO(ibash) handle bot not existing
+    actions.setCurrentBot(parseInt(this.props.params.id, 10));
   },
 
   componentWillUnmount: function() {
   },
 
   componentWillReceiveProps: function(nextProps) {
-    actions.setCurrentBot(nextProps.params.id);
+    // TODO(ibash) see id you can get id as an int
+    // TODO(ibash) handle bot not existing
+    actions.setCurrentBot(parseInt(nextProps.params.id, 10));
   },
 
   onCodeChange: function(event) {
@@ -39,11 +50,14 @@ module.exports = React.createClass({
   },
 
   onClickPlay: function() {
-    actions.saveAndPlayBot(this.props.params.id);
+    // TODO(ibash) see id you can get id as an int
+    // TODO(ibash) there should be a better way to get access to the router...
+    actions.saveAndPlayBot(parseInt(this.props.params.id, 10), this.context.router);
   },
 
   onClickStop: function() {
-    actions.stopBot(this.props.params.id);
+    // TODO(ibash) see id you can get id as an int
+    actions.stopBot(parseInt(this.props.params.id, 10));
   },
 
   render: function() {
