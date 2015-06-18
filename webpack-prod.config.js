@@ -18,15 +18,10 @@ module.exports = {
   ],
   output: {
     path: './build',
+    publicPath: '/',
     filename: 'bundle.[chunkhash].js'
   },
   devtool:'source-map',
-  devServer: {
-    // proxy calls to api to our own node server backend
-    proxy: {
-      '/api/*': 'http://localhost:5000/'
-    }
-  },
   module: {
     loaders: commonConfig.loaders.concat(prodLoaders)
   },

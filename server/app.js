@@ -24,13 +24,14 @@ app.get('/api/bots/inspect', cors(), inspect);
 app.get('/api/bots/:id', cors(), getBot);
 app.post('/api/bots', cors(), saveBot);
 
-// TODO(ibash) make this work with history location
-app.get('/', function(req, res) {
+app.use('/', express.static(STATIC_DIR, {maxage: 31557600}));
+
+// Any unmatched route gets served the client
+app.get('*', function(req, res) {
   res.header('Cache-Control', "max-age=60, must-revalidate, private");
   res.sendFile('index.html', {root: STATIC_DIR});
 });
 
-app.use('/', express.static(STATIC_DIR, {maxage: 31557600}));
 
 function inspect(req, res, next) {
   res.json(db.bots);

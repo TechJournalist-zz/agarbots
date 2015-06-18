@@ -19,7 +19,8 @@ module.exports = {
   ],
   output: {
     path: './build',
-    filename: '/bundle.[chunkhash].js'
+    publicPath: '/',
+    filename: 'bundle.[chunkhash].js'
   },
   devtool: 'eval',
   devServer: {

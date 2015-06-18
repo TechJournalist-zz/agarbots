@@ -28,7 +28,7 @@ This will build the app and output the files to the `build` directory.
 ## Running the server
 
 ```sh
-npm run server
+npm start
 ```
 
 This will launch the express server serving content from `build`
