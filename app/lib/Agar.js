@@ -50,19 +50,10 @@ Agar.prototype.start = function start() {
     la = !0;
     B = ma = self.canvas;
     e = B.getContext("2d");
-    var a = !1,
-      b = !1,
-      c = !1;
     window.onresize = Da;
     Da();
     window.requestAnimationFrame(Ea);
     null == q && v && W();
-  }
-
-  function Ba(a) {
-    D *= Math.pow(.9, a.wheelDelta / -120 || a.detail || 0);
-    1 > D && (D = 1);
-    D > 4 / g && (D = 4 / g)
   }
 
   function Ta() {
@@ -105,10 +96,6 @@ Agar.prototype.start = function start() {
     q.onerror = function () {
       console.log("socket error")
     }
-  }
-
-  function N(a) {
-    return new DataView(new ArrayBuffer(a))
   }
 
   function onMessage(a) {
@@ -418,7 +405,6 @@ Agar.prototype.start = function start() {
     Y = -1,
     ab = 0,
     G = 0,
-    E = null,
     da = 0,
     ea = 0,
     fa = 1E4,
@@ -443,7 +429,6 @@ Agar.prototype.start = function start() {
     ra = 0,
     ba = 0,
     ca = 0,
-    Qa = 0,
     eb = ["#333333", "#FF3333", "#33FF33", "#3333FF"],
     va = !1,
     D = 1,
@@ -451,10 +436,7 @@ Agar.prototype.start = function start() {
     wa = new Image;
   wa.src = "img/split.png";
 
-  var aa = 500,
-    La = -1,
-    Ma = -1,
-    w = null,
+  var w = null,
     y = 1,
     ia = null,
     J = {},
