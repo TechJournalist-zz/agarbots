@@ -5,7 +5,6 @@ var React = require('react');
 var Navigation = require('react-router').Navigation;
 var branch = require('baobab-react/mixins').branch;
 var Editor = require('../components/Editor');
-var Header = require('../components/Header');
 var Viewer = require('../components/Viewer');
 var actions = require('../actions');
 
@@ -49,24 +48,7 @@ module.exports = React.createClass({
     actions.changeCode(event.target.value);
   },
 
-  onClickPlay: function() {
-    // TODO(ibash) see id you can get id as an int
-    // TODO(ibash) there should be a better way to get access to the router...
-    actions.saveAndPlayBot(parseInt(this.props.params.id, 10), this.context.router);
-  },
-
-  onClickStop: function() {
-    // TODO(ibash) see id you can get id as an int
-    actions.stopBot(parseInt(this.props.params.id, 10));
-  },
-
   render: function() {
-    var headerProps = {
-      showBotActions: true,
-      onClickPlay: this.onClickPlay,
-      onClickStop: this.onClickStop,
-    };
-
     var code;
     if (this.state.editorCode === null) {
       code = this.state.bot.code;
@@ -87,7 +69,6 @@ module.exports = React.createClass({
 
     return (
       <div>
-        <Header {...headerProps}/>
         <Editor {...editorProps}/>
         <Viewer {...viewerProps}/>
       </div>

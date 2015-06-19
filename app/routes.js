@@ -6,6 +6,7 @@ var Route = require('react-router').Route;
 var DefaultRoute = require('react-router').DefaultRoute;
 var App = require('./App');
 var BotContainer = require('./components/BotContainer');
+var Docs = require('./components/Docs');
 
 var RedirectToDefaultValue = React.createClass({
   statics: {
@@ -19,6 +20,7 @@ var RedirectToDefaultValue = React.createClass({
 module.exports = (
   <Route path='' handler={App}>
     <DefaultRoute handler={RedirectToDefaultValue}/>
-    <Route path='/bots/:id?' handler={BotContainer}/>
+    <Route name='bot' path='/bots/:id?' handler={BotContainer}/>
+    <Route name='docs' path='/docs' handler={Docs}/>
   </Route>
 );
