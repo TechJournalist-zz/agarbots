@@ -7,6 +7,7 @@ var ReactRouter = require('react-router');
 var RouteHandler = require('react-router').RouteHandler;
 var root = require('baobab-react/mixins').root;
 var Header = require('./components/Header');
+var actions = require('./actions');
 
 module.exports = React.createClass({
   displayName: 'App',

@@ -4,8 +4,8 @@
  * Contains handlers for the websocket server.
  */
 var url = require('url');
+var Bot = require('./models/Bot');
 var UntrustedBot = require('./UntrustedBot');
-var db = require('./mockDB');
 
 /**
  * onConnection
@@ -20,12 +20,17 @@ var db = require('./mockDB');
  */
 exports.onConnection = function onConnection(client) {
   var query = url.parse(client.upgradeReq.url, true).query;
-  var bot = db.load(query.id);
-  if (!bot) {
-    console.log('TODO(ibash) handle bot not existing');
-    return;
-  }
+  Bot
+    .find(query.id)
+    .then(function(bot) {
+      var untrustedBot = new UntrustedBot(bot.code, client);
+      untrustedBot.play();
+    });
 
-  var untrustedBot = new UntrustedBot(bot.code, client);
-  untrustedBot.play();
+    // TODO(ibash) handle error / bot not found
+  //var bot = db.load(query.id);
+  //if (!bot) {
+    //console.log('TODO(ibash) handle bot not existing');
+    //return;
+  //}
 };

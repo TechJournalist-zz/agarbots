@@ -8,7 +8,7 @@ var compression = require('compression');
 var cors = require('cors');
 var express= require('express');
 var path = require('path');
-var db = require('./mockDB');
+var Bot = require('./models/Bot');
 
 var STATIC_DIR = path.join(__dirname, './../build');
 
@@ -20,7 +20,6 @@ module.exports = app;
 app.use(bodyParser());
 app.use(compression());
 
-app.get('/api/bots/inspect', cors(), inspect);
 app.get('/api/bots/:id', cors(), getBot);
 app.post('/api/bots', cors(), saveBot);
 
@@ -32,17 +31,20 @@ app.get('*', function(req, res) {
   res.sendFile('index.html', {root: STATIC_DIR});
 });
 
-
-function inspect(req, res, next) {
-  res.json(db.bots);
-};
-
 function getBot(req, res, next) {
-  var bot = db.load(req.params.id);
-  res.json(bot);
+  Bot
+    .find(req.params.id)
+    .then(function(bot) {
+      res.json(bot);
+    });
+    // TODO(ibash) handle error
 };
 
 function saveBot(req, res, next) {
-  var bot = db.saveNew(req.body);
-  res.json(bot);
+  Bot
+    .create(req.body)
+    .then(function(bot) {
+      res.json(bot);
+    });
+    // TODO(ibash) handle error
 };

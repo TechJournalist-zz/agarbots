@@ -8,7 +8,8 @@
     "build": "rm build/*; webpack --config ./webpack-prod.config.js --progress --colors",
     "start": "node server/index.js",
     "test": "karma start",
-    "testing": "karma start --single-run=false"
+    "testing": "karma start --single-run=false",
+    "knex": "node_modules/knex/lib/bin/cli.js"
   },
   "author": "Islam Sharabash",
   "dependencies": {
@@ -25,10 +26,13 @@
     "font-awesome": "^4.3.0",
     "jailed": "^0.2.0",
     "jquery": "^2.1.4",
+    "knex": "^0.8.6",
     "lodash": "^3.9.3",
+    "moron": "^0.1.4",
     "react-bootstrap": "^0.23.2",
     "react-code-mirror": "^3.0.4",
     "react-router": "^0.13.3",
+    "sqlite3": "^3.0.8",
     "url-loader": "^0.5.6",
     "ws": "^0.7.2"
   },
