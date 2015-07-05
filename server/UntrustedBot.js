@@ -67,8 +67,6 @@ UntrustedBot.prototype.init = function init() {
     });
   }
 
-  this.backend.connect();
-
   // Initialize the jailed environment.
   var jailedController = {
     move: this.controller.move,
@@ -94,9 +92,14 @@ UntrustedBot.prototype.play = function play() {
   // TODO(ibash) make it so we can call .play twice( i.e. if it's already
   // connected...
   this.plugin.whenConnected(function() {
-    self.controller.sendInitMessage();
-    self.controller.play();
-    self.agent.run();
+    self.backend.connect();
+
+    // Kind of lame, but we need to wait for the boardSize event or the play
+    // event does not register.
+    self.backend.on('boardSize', function() {
+      self.controller.play();
+      self.agent.run();
+    });
   });
 };
 

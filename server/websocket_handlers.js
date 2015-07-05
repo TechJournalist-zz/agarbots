@@ -26,11 +26,5 @@ exports.onConnection = function onConnection(client) {
       var untrustedBot = new UntrustedBot(bot.code, client);
       untrustedBot.play();
     });
-
     // TODO(ibash) handle error / bot not found
-  //var bot = db.load(query.id);
-  //if (!bot) {
-    //console.log('TODO(ibash) handle bot not existing');
-    //return;
-  //}
 };
