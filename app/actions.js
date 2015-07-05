@@ -4,64 +4,76 @@
 var api = require('./api');
 var tree = require('./tree');
 
+var actions =
 module.exports = {
-  setCurrentBot: function(id) {
-    // TODO(ibash) check if bot is loaded, if not loaded push a
-    // {id: id, loading: true} to the tree, and then make a web request to
-    // load the bot.
-    tree.set('currentBotId', id);
+  loadBot: function(id) {
+    return api
+      .loadBot(id)
+      .done(function(bot) {
+        actions.receiveBot(bot);
+      })
+      .fail(function() {
+        // TODO(ibash) fail handling...
+        debugger;
+      });
   },
 
-  changeCode: function(code) {
-    tree.set('editorCode', code);
-    tree.commit();
-  },
+  saveBot: function(router) {
+    var editorCode = tree.get('editorCode');
 
-  playBot: function(id) {
-    var botCursor = tree.select('bots', {id: id});
-    if (!botCursor.get()) {
-      throw new Error('Bot does not exist in tree');
-    }
-    botCursor.set('playBot', true);
-  },
-
-  stopBot: function(id) {
-    var botCursor = tree.select('bots', {id: id});
-    if (!botCursor.get()) {
-      throw new Error('Bot does not exist in tree');
-    }
-    botCursor.set('playBot', false);
+    return api
+      .saveBot(editorCode)
+      .done(function(data) {
+        actions.receiveBot(data);
+        router.transitionTo('/bots/' + data.id);
+      })
+      .fail(function() {
+        // TODO(ibash) fail handling...
+        debugger;
+      });
   },
 
   receiveBot: function(bot) {
     // TODO(ibash) validate bot...
+    var existing = tree.select('bots', {id: bot.id});
+    existing.unset();
     tree.select('bots').push(bot);
   },
 
-  saveAndPlayBot: function(id, router) {
-    // If the editor code changed, then we save that (and get a new id) and then
-    // play that bot.
-    // If the code has not changed we just play the bot directly.
+  loadAndSetCurrentBotId(id) {
+    return actions
+      .loadBot(id)
+      .done(function(bot) {
+        actions.setCurrentBotId(bot.id);
+        actions.setEditorCode(bot.code);
+      });
+  },
+
+  setCurrentBotId: function(id) {
+    tree.set('currentBotId', id);
+  },
+
+  setEditorCode: function(code) {
+    tree.set('editorCode', code);
+    tree.commit();
+  },
+
+  play: function() {
     var editorCode = tree.get('editorCode');
 
-    if (editorCode === null) {
-      module.exports.playBot(id);
-    } else {
-      api.saveBot(editorCode)
-        .done(function(data) {
-          // returns the fully saved bot
-          // TODO(ibash) this is a bit awkward, having to do all this just to
-          // get the bot to play...
-          // the
-          module.exports.receiveBot(data);
-          tree.commit();
-          module.exports.playBot(data.id);
-          router.transitionTo('/bots/' + data.id);
-        })
-        .fail(function() {
-          // TODO(ibash) fail handling...
-          debugger;
-        });
-    }
+    return api
+      .savePlay(editorCode)
+      .done(function(data) {
+        tree.set('playId', data.id);
+        tree.set('isPlaying', true);
+      })
+      .fail(function() {
+        // TODO(ibash) fail handling...
+        debugger;
+      });
+  },
+
+  stop: function() {
+    tree.set('isPlaying', false);
   }
 };

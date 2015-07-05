@@ -11,13 +11,13 @@ module.exports = React.createClass({
   displayName: 'Viewer',
 
   propTypes: {
-    id: React.PropTypes.number,
-    playBot: React.PropTypes.bool.isRequired
+    playId: React.PropTypes.number,
+    isPlaying: React.PropTypes.bool.isRequired
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    return this.props.id !== nextProps.id ||
-      this.props.playBot !== nextProps.playBot;
+    return this.props.playId !== nextProps.playId ||
+      this.props.isPlaying !== nextProps.isPlaying;
   },
 
   componentDidMount: function() {
@@ -36,9 +36,9 @@ module.exports = React.createClass({
   },
 
   onDOMReady: function() {
-    if (this.props.playBot) {
+    if (this.props.isPlaying) {
       // TODO(ibash) move the hostname etc to something that's passed in
-      var address = 'ws://localhost:5000/socket?id=' + this.props.id;
+      var address = 'ws://localhost:5000/socket?playId=' + this.props.playId;
       //var address = 'ws://' + window.location.host + '/socket?id=' + this.props.id;
       this.agar = new Agar(address, this.refs.canvas.getDOMNode());
       this.agar.start();

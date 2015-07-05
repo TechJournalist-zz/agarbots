@@ -8,7 +8,7 @@ var compression = require('compression');
 var cors = require('cors');
 var express= require('express');
 var path = require('path');
-var Bot = require('./models/Bot');
+var api = require('./api');
 
 var STATIC_DIR = path.join(__dirname, './../build');
 
@@ -20,8 +20,7 @@ module.exports = app;
 app.use(bodyParser());
 app.use(compression());
 
-app.get('/api/bots/:id', cors(), getBot);
-app.post('/api/bots', cors(), saveBot);
+app.use('/api', api);
 
 app.use('/', express.static(STATIC_DIR, {maxage: 31557600}));
 
@@ -30,21 +29,3 @@ app.get('*', function(req, res) {
   res.header('Cache-Control', "max-age=60, must-revalidate, private");
   res.sendFile('index.html', {root: STATIC_DIR});
 });
-
-function getBot(req, res, next) {
-  Bot
-    .find(req.params.id)
-    .then(function(bot) {
-      res.json(bot);
-    });
-    // TODO(ibash) handle error
-};
-
-function saveBot(req, res, next) {
-  Bot
-    .create(req.body)
-    .then(function(bot) {
-      res.json(bot);
-    });
-    // TODO(ibash) handle error
-};

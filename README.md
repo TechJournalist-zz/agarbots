@@ -33,6 +33,13 @@ npm start
 
 This will launch the express server serving content from `build`
 
+## Initializing the database
+
+```sh
+npm run knex -- migrate:latest
+npm run knex -- seed:run
+```
+
 ## Testing
 Testing is done using karma + mocha with sinon for stubbing ajax requests. We use the [karma-webpack preprocessor](https://github.com/webpack/karma-webpack)
 The karma config lives in `karma.conf.js` and is setup to run tests in Chrome and load up `tests.webpack.js`

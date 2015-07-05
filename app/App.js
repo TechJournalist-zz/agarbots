@@ -15,16 +15,15 @@ module.exports = React.createClass({
   mixins: [ReactRouter.State, root],
 
   onClickPlay: function() {
-    // TODO(ibash) see id you can get id as an int
-    // TODO(ibash) there should be a better way to get access to the router...
-    var id = parseInt(this.getParams().id, 10);
-    actions.saveAndPlayBot(id, this.context.router);
+    actions.play();
   },
 
   onClickStop: function() {
-    // TODO(ibash) see id you can get id as an int
-    var id = parseInt(this.getParams().id, 10);
-    actions.stopBot(id);
+    actions.stop();
+  },
+
+  onClickSave: function() {
+    actions.saveBot(this.context.router);
   },
 
   isBotsRoute: function() {
@@ -39,6 +38,7 @@ module.exports = React.createClass({
       showBotActions: this.isBotsRoute(),
       onClickPlay: this.onClickPlay,
       onClickStop: this.onClickStop,
+      onClickSave: this.onClickSave
     };
 
     return (

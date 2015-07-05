@@ -20,51 +20,45 @@ module.exports = React.createClass({
   },
 
   cursors: {
-    editorCode: ['editorCode']
-  },
-
-  facets: {
-    bot: 'currentBot'
+    editorCode: ['editorCode'],
+    playId: ['playId'],
+    isPlaying: ['isPlaying']
   },
 
   // TODO(ibash) propTypes
 
   componentDidMount: function() {
-    // TODO(ibash) see id you can get id as an int
-    // TODO(ibash) handle bot not existing
-    actions.setCurrentBot(parseInt(this.props.params.id, 10));
+    this.load(this.props);
   },
 
   componentWillUnmount: function() {
   },
 
   componentWillReceiveProps: function(nextProps) {
+    this.load(nextProps);
+  },
+
+  load: function(props) {
     // TODO(ibash) see id you can get id as an int
-    // TODO(ibash) handle bot not existing
-    actions.setCurrentBot(parseInt(nextProps.params.id, 10));
+    var id = parseInt(props.params.id, 10);
+    // TODO(ibash) handle bot not existing or loaded yet
+    actions.loadAndSetCurrentBotId(id);
   },
 
   onCodeChange: function(event) {
-    actions.changeCode(event.target.value);
+    actions.setEditorCode(event.target.value);
   },
 
   render: function() {
-    var code;
-    if (this.state.editorCode === null) {
-      code = this.state.bot.code;
-    } else {
-      code = this.state.editorCode;
-    }
-
     var editorProps = {
-      code: code,
+      code: this.state.editorCode,
       onCodeChange: this.onCodeChange
     };
 
     var viewerProps = {
       ref: 'viewer',
-      id: this.state.bot.id,
-      playBot: this.state.bot.playBot
+      playId: this.state.playId,
+      isPlaying: this.state.isPlaying
     };
 
     return (
