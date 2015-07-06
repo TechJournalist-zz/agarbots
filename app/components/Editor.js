@@ -1,5 +1,7 @@
 require('codemirror/lib/codemirror.css');
 require('codemirror/theme/solarized.css');
+require('codemirror/mode/javascript/javascript');
+require('codemirror/addon/edit/matchbrackets');
 
 var React = require('react');
 var CodeMirror = require('react-code-mirror');
@@ -36,6 +38,7 @@ module.exports = React.createClass({
       mode: 'javascript',
       theme: 'solarized',
       lineNumbers: true,
+      matchBrackets: true,
       onChange: this.props.onCodeChange
     };
 
