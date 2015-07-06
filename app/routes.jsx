@@ -4,9 +4,9 @@
 var React = require('react');
 var Route = require('react-router').Route;
 var DefaultRoute = require('react-router').DefaultRoute;
-var App = require('./App');
-var BotContainer = require('./components/BotContainer');
-var Docs = require('./components/Docs');
+var App = require('./App.jsx');
+var BotContainer = require('./components/BotContainer.jsx');
+var Docs = require('./components/Docs.jsx');
 
 var RedirectToDefaultValue = React.createClass({
   statics: {

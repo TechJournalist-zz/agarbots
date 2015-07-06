@@ -9,14 +9,16 @@ var Play = require('./models/Play');
 var api = express();
 module.exports = api;
 
+// TODO(ibash) add logging for all requests
+
 api.get('/bots/:id', cors(), getBot);
 api.post('/bots', cors(), saveBot);
 
 api.post('/plays', cors(), savePlay);
 
+api.use(errorHandler);
+
 function getBot(req, res, next) {
-  console.log('got a bot request');
-  console.log(req.params.id);
   Bot
     .find(req.params.id)
     .then(function(bot) {
@@ -25,8 +27,10 @@ function getBot(req, res, next) {
       } else {
         res.send(404);
       }
+    })
+    .catch(function(error) {
+      next(error);
     });
-    // TODO(ibash) handle error
 };
 
 function saveBot(req, res, next) {
@@ -34,8 +38,10 @@ function saveBot(req, res, next) {
     .create(req.body)
     .then(function(bot) {
       res.json(bot);
+    })
+    .catch(function(error) {
+      next(error);
     });
-    // TODO(ibash) handle error
 };
 
 function savePlay(req, res, next) {
@@ -43,6 +49,13 @@ function savePlay(req, res, next) {
     .create(req.body)
     .then(function(play) {
       res.json(play);
+    })
+    .catch(function(error) {
+      next(error);
     });
-    // TODO(ibash) handle error
 };
+
+function errorHandler(error, req, res, next) {
+  // TODO(ibash) log this error
+  res.send(500);
+}

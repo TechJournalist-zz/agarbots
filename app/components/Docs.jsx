@@ -10,6 +10,8 @@ module.exports = React.createClass({
     return (
       <div>
         <h3>Documentation</h3>
+
+        <h4>Documentation</h4>
         - What is AgarBots?
         AgarBots is an easy way to create bots that play <a href='https://agar.io'>agar.io</a>.
         - How do I use AgarBots?

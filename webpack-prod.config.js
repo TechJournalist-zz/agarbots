@@ -14,7 +14,7 @@ var prodLoaders = [
 module.exports = {
   entry: [
     // our entry file
-    './app/main.js'
+    './app/main.jsx'
   ],
   output: {
     path: './build',

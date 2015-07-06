@@ -4,8 +4,8 @@
 var React = require('react');
 var Navigation = require('react-router').Navigation;
 var branch = require('baobab-react/mixins').branch;
-var Editor = require('../components/Editor');
-var Viewer = require('../components/Viewer');
+var Editor = require('../components/Editor.jsx');
+var Viewer = require('../components/Viewer.jsx');
 var actions = require('../actions');
 
 module.exports = React.createClass({
