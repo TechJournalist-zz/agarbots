@@ -23,7 +23,7 @@ module.exports = React.createClass({
         <Button onClick={this.props.onClickSave}>
           <i className='fa fa-save'></i>&nbsp;Save
         </Button>
-        <Link to='docs'>Documentation</Link>
+        <a href='https://github.com/ibash/agarbots/blob/master/DOCUMENTATION.md' target='_blank'>Documentation</a>
       </div>
 		);
 	}
