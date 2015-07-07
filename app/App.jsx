@@ -26,16 +26,8 @@ module.exports = React.createClass({
     actions.saveBot(this.context.router);
   },
 
-  isBotsRoute: function() {
-    var routes = this.getRoutes();
-    return _.any(routes, function(route) {
-      return route.name === 'bot';
-    });
-  },
-
   render: function() {
     var headerProps = {
-      showBotActions: this.isBotsRoute(),
       onClickPlay: this.onClickPlay,
       onClickStop: this.onClickStop,
       onClickSave: this.onClickSave
