@@ -1,11 +1,11 @@
 ## AgarBots Documentation
 
 ##### Table of Contents
-[FAQ](#faq)
-[API Spec](#api)
-- [State](#state)
-- [Controller](#controller)
-[Examples](#examples)
+- [FAQ](#faq)
+- [API Spec](#api-spec)
+  - [State](#state)
+  - [Controller](#controller)
+- [Examples](#examples)
 
 <a name="faq"/>
 ### FAQ
