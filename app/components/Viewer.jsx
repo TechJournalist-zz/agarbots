@@ -37,12 +37,18 @@ module.exports = React.createClass({
 
   onDOMReady: function() {
     if (this.props.isPlaying) {
-      var address = 'ws://' + window.location.host + '/socket?playId=' + this.props.playId;
+      var address = this.socketAddress(this.props.playId);
       this.agar = new Agar(address, this.refs.canvas.getDOMNode());
       this.agar.start();
     } else if (this.agar) {
       this.agar.stop();
     }
+  },
+
+  socketAddress: function(playId) {
+    var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    var address = protocol + '//' + window.location.host + '/socket?playId=' + playId;
+    return address;
   },
 
   render: function() {
