@@ -1,8 +1,14 @@
-# AgarBots Documentation
+## AgarBots Documentation
 
-[TOC]
+##### Table of Contents
+[FAQ](#faq)
+[API Spec](#api)
+- [State](#state)
+- [Controller](#controller)
+[Examples](#examples)
 
-## FAQ
+<a name="faq"/>
+### FAQ
 
 **Q:** What is AgarBots?
 
@@ -54,23 +60,59 @@ function step(state, controller) {
   `state.boardSize` has four attributes, `minX`, `maxX`, `minY`, and `maxY`.
   These represent the minimum and maximum positions you can move to.
 
-## API Spec
+<a name="api"/>
+### API Spec
 
-### State
+There are two objects to be concerned about in the API. `state` and the
+`controller`. `state` holds the current world state and `controller` lets you
+move and control your blob.
+
+<a name="state"/>
+#### State
+
+  State is an object that looks like:
+
+```javascript
+{
+  blobs: [
+    // TODO
+  ],
+  boardSize: {
+    minX: <number>,
+    maxX: <number>,
+    minY: <number>,
+    maxY: <number>
+  },
+  ownedBlobIds: [
+    // TODO
+  ]
+}
+```
+
   TODO spec out state
+  TODO example of how you would use state in code
 
-### Controller
-  TODO spec out controller
+<a name="controller"/>
+#### Controller
 
-## Examples
+  Controller is an object that has the following methods defined:
+
+  * `move` with signature `function(x, y)`
+
+    `move` moves towards absolute coordinates. It sets the target that the
+    player will continually move to. That is, if you call `controller.move(0, 0)`
+    the bot will continually move to the coordinates `(0, 0)` on the board.
+
+<a name="examples"/>
+### Examples
 
 Below are a few code examples of bots you can make. Copy/paste them into
 [AgarBots](http://agarbots.com) and give them a spin!
 
-### Eat bot
+#### Eat bot
 
 TODO show eat bot example
 
-### Run away bot
+#### Run away bot
 
 TODO show eat bot example
