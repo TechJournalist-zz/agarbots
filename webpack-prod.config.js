@@ -19,7 +19,7 @@ module.exports = {
   output: {
     path: './build',
     publicPath: '/',
-    filename: 'bundle.[chunkhash].js'
+    filename: 'bundle.[hash].js'
   },
   devtool:'source-map',
   module: {

@@ -20,14 +20,23 @@ module.exports = {
   output: {
     path: './build',
     publicPath: '/',
-    filename: 'bundle.[chunkhash].js'
+    filename: 'bundle.[hash].js'
   },
   devtool: 'eval',
   devServer: {
     // proxy calls to api to our own node server backend
-    proxy: {
-      '/api/*': 'http://localhost:5000/'
-    },
+    proxy: [
+      {
+        ws: true,
+        path:'*',
+        target:'ws://localhost:5000'
+      },
+      {
+        path: '/api/*',
+        target:'http://localhost:5000/'
+      }
+    ],
+
     historyApiFallback: true
   },
   module: {
