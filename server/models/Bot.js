@@ -1,19 +1,13 @@
-var MoronModel = require('moron').MoronModel;
+var _ = require('lodash');
+var Base = require('./Base');
 
 function Bot() {
-  MoronModel.apply(this, arguments);
+  Base.apply(this, arguments);
 }
-MoronModel.extend(Bot);
+Base.extend(Bot);
 module.exports = Bot;
 
 Bot.tableName = 'bots';
-
-Bot.find = function find(id) {
-  return Bot
-    .query()
-    .where('id', id)
-    .first();
-};
 
 Bot.create = function create(json) {
   return Bot

@@ -25,7 +25,7 @@ function getBot(req, res, next) {
       if (bot) {
         res.json(bot);
       } else {
-        res.send(404);
+        res.sendStatus(404);
       }
     })
     .catch(function(error) {
@@ -57,5 +57,5 @@ function savePlay(req, res, next) {
 
 function errorHandler(error, req, res, next) {
   // TODO(ibash) log this error
-  res.send(500);
+  res.sendStatus(500);
 }

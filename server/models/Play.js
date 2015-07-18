@@ -1,19 +1,13 @@
-var MoronModel = require('moron').MoronModel;
+var _ = require('lodash');
+var Base = require('./Base');
 
 function Play() {
-  MoronModel.apply(this, arguments);
+  Base.apply(this, arguments);
 }
-MoronModel.extend(Play);
+Base.extend(Play);
 module.exports = Play;
 
 Play.tableName = 'plays';
-
-Play.find = function find(id) {
-  return Play
-    .query()
-    .where('id', id)
-    .first();
-};
 
 Play.create = function create(json) {
   return Play

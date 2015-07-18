@@ -20,8 +20,9 @@ var UntrustedBot = require('./UntrustedBot');
  */
 exports.onConnection = function onConnection(client) {
   var query = url.parse(client.upgradeReq.url, true).query;
+
   Play
-    .find(query.play_id)
+    .find(query.playId)
     .then(function(play) {
       var untrustedBot = new UntrustedBot(play.code, client);
       untrustedBot.play();
