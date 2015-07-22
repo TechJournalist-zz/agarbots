@@ -5,7 +5,7 @@ module.exports = function (config) {
   config.set({
     browsers: [ 'Chrome' ], //run in Chrome
     singleRun: true, //just run once by default
-    frameworks: [ 'mocha', 'sinon' ], //use the mocha test framework
+    frameworks: [ 'mocha', 'chai', 'sinon' ], //use the mocha test framework
     files: [
       'tests.webpack.js' //just load this file
     ],

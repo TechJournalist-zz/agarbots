@@ -8,13 +8,18 @@ MoronModel.extend(Base);
 module.exports = Base;
 
 Base.find = function find(id) {
-  id = parseInt(id, 10);
-  if (!_.isNumber(id)) {
-    throw new Error('id is not a number');
-  }
+  id = this.validateId(id);
 
   return this
     .query()
     .where('id', id)
     .first();
 };
+
+Base.validateId = function validateId(id) {
+  id = parseInt(id, 10);
+  if (!_.isNumber(id)) {
+    throw new Error('id is not a number');
+  }
+  return id:
+}

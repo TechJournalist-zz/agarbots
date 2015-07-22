@@ -5,6 +5,7 @@ var React = require('react');
 var Navigation = require('react-router').Navigation;
 var branch = require('baobab-react/mixins').branch;
 var Editor = require('../components/Editor.jsx');
+var Logs = require('../components/Logs.jsx');
 var Viewer = require('../components/Viewer.jsx');
 var actions = require('../actions');
 
@@ -55,6 +56,11 @@ module.exports = React.createClass({
       onCodeChange: this.onCodeChange
     };
 
+    var logsProps = {
+      playId: this.state.playId,
+      isPlaying: this.state.isPlaying
+    };
+
     var viewerProps = {
       ref: 'viewer',
       playId: this.state.playId,
@@ -64,6 +70,7 @@ module.exports = React.createClass({
     return (
       <div>
         <Editor {...editorProps}/>
+        <Logs {...logsProps}/>
         <Viewer {...viewerProps}/>
       </div>
     );

@@ -9,9 +9,11 @@
  */
 var _ = require('lodash');
 var WebSocket = require('ws');
+var events = require('events');
 var fs = require('fs');
 var jailed = require('jailed');
 var path = require('path');
+var util = require('util');
 var AgarBackend = require('agar').AgarBackend;
 var GameState = require('agar').GameState;
 var Controller = require('agar').Controller;
@@ -29,10 +31,13 @@ var pluginCode = fs.readFileSync(path.join(__dirname, 'plugin.js'), 'utf8');
  */
 function UntrustedBot(code, client) {
   _.bindAll(this);
+  events.EventEmitter.call(this);
+
   this.code = code;
   this.client = client;
   this.isInit = false;
 }
+util.inherits(UntrustedBot, events.EventEmitter);
 module.exports = UntrustedBot;
 
 /**
@@ -71,7 +76,7 @@ UntrustedBot.prototype.init = function init() {
   var jailedController = {
     move: this.controller.move,
     // TODO(ibash) get a better way of doing logging
-    log: console.log
+    log: this.handleLog
   };
   var code = pluginCode + '\n' + this.code;
   this.plugin = new jailed.DynamicPlugin(code, jailedController);
@@ -114,4 +119,8 @@ UntrustedBot.prototype.play = function play() {
  */
 UntrustedBot.prototype.step = function step(state, controller) {
   this.plugin.remote.step(state.toJSON());
+};
+
+UntrustedBot.prototype.handleLog = function handleLog() {
+  this.emit('log', arguments);
 };

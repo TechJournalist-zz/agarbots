@@ -15,5 +15,5 @@ var server = app.listen(process.env.PORT || 5000, function () {
   console.log('App listening at http://%s:%s', host, port);
 });
 
-var wss = new WebSocketServer({server: server, path: '/socket'});
+var wss = new WebSocketServer({server: server});
 wss.on('connection', handlers.onConnection);

@@ -1,3 +1,4 @@
+/*
 var React = require('react');
 var TestUtils = require('react/lib/ReactTestUtils'); 
 var expect = require('expect');
@@ -30,3 +31,4 @@ describe('root', function () {
 	xhr.restore();
   })
 });
+*/

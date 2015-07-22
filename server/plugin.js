@@ -19,4 +19,8 @@ application.setInterface({
   }
 });
 
+var console = {
+  log: application.remote.log
+};
+
 // User code goes under here:

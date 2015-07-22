@@ -57,5 +57,7 @@ function savePlay(req, res, next) {
 
 function errorHandler(error, req, res, next) {
   // TODO(ibash) log this error
+  console.log('error');
+  console.log(error);
   res.sendStatus(500);
 }

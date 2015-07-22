@@ -47,7 +47,7 @@ module.exports = React.createClass({
 
   socketAddress: function(playId) {
     var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    var address = protocol + '//' + window.location.host + '/socket?playId=' + playId;
+    var address = protocol + '//' + window.location.host + '/play?playId=' + playId;
     return address;
   },
 
