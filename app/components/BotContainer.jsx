@@ -1,12 +1,14 @@
 /**
  * BotContainer
  */
+var _ = require('lodash');
 var React = require('react');
 var Navigation = require('react-router').Navigation;
 var branch = require('baobab-react/mixins').branch;
 var Editor = require('../components/Editor.jsx');
 var Logs = require('../components/Logs.jsx');
 var Viewer = require('../components/Viewer.jsx');
+var LogsManager = require('../LogsManager');
 var actions = require('../actions');
 
 module.exports = React.createClass({
@@ -22,14 +24,16 @@ module.exports = React.createClass({
 
   cursors: {
     editorCode: ['editorCode'],
-    playId: ['playId'],
-    isPlaying: ['isPlaying']
+    isPlaying: ['isPlaying'],
+    logs: ['logs'],
+    playId: ['playId']
   },
 
   // TODO(ibash) propTypes
 
   componentDidMount: function() {
     this.load(this.props);
+    new LogsManager(this.context.tree);
   },
 
   componentWillUnmount: function() {
@@ -57,8 +61,7 @@ module.exports = React.createClass({
     };
 
     var logsProps = {
-      playId: this.state.playId,
-      isPlaying: this.state.isPlaying
+      messages: _.pluck(this.state.logs, 'message')
     };
 
     var viewerProps = {

@@ -4,7 +4,6 @@ require('./assets/style.scss');
 
 var React = require('react');
 var Router = require('react-router');
-var logsManager = require('./logs_manager');
 var routes = require('./routes.jsx');
 var tree = require('./tree');
 

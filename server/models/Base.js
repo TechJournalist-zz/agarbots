@@ -21,5 +21,5 @@ Base.validateId = function validateId(id) {
   if (!_.isNumber(id)) {
     throw new Error('id is not a number');
   }
-  return id:
+  return id;
 }

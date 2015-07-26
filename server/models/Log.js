@@ -18,3 +18,9 @@ Log.latest = function latest(playId, lastLogId) {
     .where('play_id', playId)
     .where('id', '>' , lastLogId);
 };
+
+Log.create = function create(playId, message) {
+  return Log
+    .query()
+    .insert({play_id: playId, message: message});
+};

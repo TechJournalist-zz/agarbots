@@ -7,12 +7,12 @@ module.exports = React.createClass({
   displayName: 'Logs',
 
   propTypes: {
-    logs: // Array of logs...
+    messages: React.PropTypes.arrayOf(React.PropTypes.string)
   },
 
   render: function() {
-    var messages = _.map(this.props.logs, function(log) {
-      return (<p>{log}</p>);
+    var messages = _.map(this.props.messages, function(message) {
+      return (<p>{message}</p>);
     });
 
     return (

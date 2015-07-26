@@ -14,9 +14,12 @@ describe('LogsManager', function() {
     var steps = cursor.getHistory().length;
     if (steps) {
       cursor.undo(steps);
+      tree.commit();
     }
 
     logsManager = new LogsManager(cursor);
+    sinon.stub(logsManager, 'destroyWebSocket');
+    sinon.stub(logsManager, 'createWebSocket');
   });
 
   it('starts with empty logs', function() {
@@ -25,9 +28,6 @@ describe('LogsManager', function() {
 
   describe('#reset', function() {
     beforeEach(function() {
-      sinon.spy(logsManager, 'destroyWebSocket');
-      sinon.spy(logsManager, 'createWebSocket');
-
       cursor.set('logs', [1, 2, 3]);
       tree.commit();
 
@@ -66,7 +66,16 @@ describe('LogsManager', function() {
     });
   });
 
-  it('updates logs from connection');
+  it('updates logs', function() {
+    logsManager.onLog({id: 1, play_id: 1, message: 'hello'});
+    logsManager.onLog({id: 2, play_id: 1, message: 'goodbye'});
+    logsManager.onLog({id: 3, play_id: 1, message: '...'});
+    tree.commit();
 
-  it('clears logs when playId changes');
+    assert.deepEqual(cursor.get('logs'), [
+      {id: 1, play_id: 1, message: 'hello'},
+      {id: 2, play_id: 1, message: 'goodbye'},
+      {id: 3, play_id: 1, message: '...'},
+    ]);
+  });
 });

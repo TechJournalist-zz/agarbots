@@ -18,15 +18,6 @@ function Agar(address, canvas) {
 module.exports = Agar;
 
 /**
- * getSocket
- *
- * @return {WebSocket}
- */
-Agar.prototype.getSocket = function getSocket() {
-  return this.socket;
-};
-
-/**
  * stop
  *
  * Stops rendering and closes the WebSocket connection.

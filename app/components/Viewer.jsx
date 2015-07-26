@@ -45,9 +45,12 @@ module.exports = React.createClass({
     }
   },
 
+  // TODO(ibash) de-dupe with socket address stuff in logs manager, maybe make a
+  // urls.js
   socketAddress: function(playId) {
     var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    var address = protocol + '//' + window.location.host + '/play?playId=' + playId;
+    //var address = protocol + '//' + window.location.host + '/play?playId=' + playId;
+    var address = protocol + '//localhost:5000/play?playId=' + playId;
     return address;
   },
 

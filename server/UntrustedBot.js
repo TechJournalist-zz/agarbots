@@ -122,5 +122,5 @@ UntrustedBot.prototype.step = function step(state, controller) {
 };
 
 UntrustedBot.prototype.handleLog = function handleLog() {
-  this.emit('log', arguments);
+  this.emit('log', _.values(arguments));
 };

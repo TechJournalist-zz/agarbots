@@ -5,7 +5,6 @@ exports.up = function(knex, Promise) {
     table.text('message');
     table.timestamps();
   });
-  
 };
 
 exports.down = function(knex, Promise) {

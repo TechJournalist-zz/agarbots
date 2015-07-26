@@ -5,6 +5,7 @@
  */
 var _ = require('lodash');
 var url = require('url');
+var WebSocket = require('ws');
 var Log = require('./models/Log');
 var Play = require('./models/Play');
 var UntrustedBot = require('./UntrustedBot');
@@ -26,9 +27,9 @@ exports.onConnection = function onConnection(client) {
   var parsedUrl =  url.parse(client.upgradeReq.url, true);
 
   if (parsedUrl.pathname === '/play') {
-    playGame(client, query.playId);
+    playGame(client, parsedUrl.query.playId);
   } else if (parsedUrl.pathname === '/logs') {
-    sendLogs(client, query.playId);
+    sendLogs(client, parsedUrl.query.playId);
   }
 };
 
@@ -48,13 +49,12 @@ function playGame(client, playId) {
  * @param playId
  * @param ... messages
  */
-function onLogMessage(playId) {
-  var messages = arguments.slice(1);
+function onLogMessage(playId, messages) {
 
   // join the messages into single string to store
   // TODO(ibash) what happens if we try to log an object?
   var stringified = messages.join(',');
-  return Log.create(playId, stringified);
+  return Log.create(playId, stringified).then();
 }
 
 function sendLogs(client, playId) {
@@ -66,17 +66,17 @@ function sendLogs(client, playId) {
     Log
       .latest(playId, lastLogId)
       .then(function(logs) {
-        var messages = _.pluck(logs, 'message');
-        client.send(JSON.stringify(messages));
-        console.log('logs');
-        console.log(JSON.stringify(messages, null, 2));
-        // TODO(ibash) update lastLogId
+        if (logs.length) {
+          lastLogId = _.last(logs).id;
+        }
+
+        client.send(JSON.stringify(logs));
       });
 
       // TODO(ibash) error handling
 
       // TODO(ibash) maybe this should stop looping on some other criteria?
-    if (self.client.readyState === WebSocket.OPEN) {
+    if (client.readyState === WebSocket.OPEN) {
       setTimeout(sendNewLogs, SEND_LOGS_TIMEOUT);
     }
   }

@@ -26,14 +26,20 @@ module.exports = {
   devServer: {
     // proxy calls to api to our own node server backend
     proxy: [
+      // TODO(ibash) fix this websocket proxy
       {
         ws: true,
-        path:'*',
+        path:'/play',
+        target:'ws://localhost:5000'
+      },
+      {
+        ws: true,
+        path:'/logs',
         target:'ws://localhost:5000'
       },
       {
         path: '/api/*',
-        target:'http://localhost:5000/'
+        target:'http://localhost:5000'
       }
     ],
 
